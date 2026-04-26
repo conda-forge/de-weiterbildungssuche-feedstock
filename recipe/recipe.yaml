@@ -1,0 +1,51 @@
+schema_version: 1
+
+context:
+  name: de-weiterbildungssuche
+  version: 0.1.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/de-weiterbildungssuche-${{ version }}.tar.gz
+  sha256: ce504947a2f7f6b8cccb6e5548263bad7dd56b45c9380ab9ab75286eda034b59
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - poetry
+  run:
+    - python >=${{ python_min }}
+    - python-dateutil
+    - urllib3 >=1.25.3
+
+tests:
+  - python:
+      imports:
+        - deutschland.weiterbildungssuche
+      python_version: ${{ python_min }}.*
+  - requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - pip check
+
+about:
+  summary: Arbeitsagentur Weiterbildungssuche API
+  license: Apache-2.0
+  license_file:
+    - LICENSE
+  homepage: https://github.com/bundesAPI/weiterbildungssuche-api
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
